@@ -71,3 +71,7 @@ Describe a model's states and the events that cause transitions between them, th
 		// set model id if not already set
 		$this->Placement->id = $placement_id;
 		$this->Placement->getCurrentState(); // returns 'placed'
+
+## TODO
+
+- Add callbacks to execute when entering or exiting a state.
