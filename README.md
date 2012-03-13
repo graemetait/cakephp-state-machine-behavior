@@ -11,7 +11,7 @@ Describe a model's states and the events that cause transitions between them, th
 
 		public $actsAs = array('StateMachine');
 
-3. Create a new database table to store the states using the following schema, adjusting the table name and forein key to match your model. For example, if you are adding states to a model name Placement you would use the following.
+3. Create a new database table to store the states using the following schema, adjusting the table name and foreign key to match your model. For example, if you are adding states to a model name Placement you would use the following.
 
 		CREATE TABLE `placement_states` (
 		  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
