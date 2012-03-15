@@ -20,7 +20,7 @@ class StateMachineBehavior extends ModelBehavior
 	{
 		// create hasMany relationship between model and it's state model
 		$state_model_alias = $model->alias . 'State';
-		$model->bindModel(array('hasMany' => array($state_model_alias)));
+		$model->bindModel(array('hasMany' => array($state_model_alias)), false);
 
 		// set local references to models
 		$this->model = $model;
