@@ -14,73 +14,73 @@
 
 class StateMachineBehavior extends ModelBehavior
 {
-	protected $model, $state_model, $foreign_key;
-
 	public function setup(Model $model)
 	{
 		// create hasMany relationship between model and it's state model
 		$state_model_alias = $model->alias . 'State';
 		$model->bindModel(array('hasMany' => array($state_model_alias)), false);
 
-		// set local references to models
-		$this->model = $model;
-		$this->state_model = $this->model->{$state_model_alias};
-
-		$this->foreign_key = Inflector::underscore($this->model->alias) . '_id';
+		// save some useful information in settings
+		$foreign_key = $model->hasMany[$state_model_alias]['foreignKey'];
+		$this->settings[$model->alias]['foreign_key'] = $foreign_key;
+		$this->settings[$model->alias]['state_model'] = $model->{$state_model_alias};
 	}
 
 	// if new record then set initital state
 	public function afterSave(Model $model, $created)
 	{
 		if ($created) {
-			$this->setInitialState();
+			$this->setInitialState($model);
 		}
 	}
 
 	// return current event as string
 	public function getCurrentState(Model $model)
 	{
-		$state = $this->state_model->find('first', array(
-			'conditions' => array($this->foreign_key => $this->model->id),
+		$state_model = $this->settings[$model->alias]['state_model'];
+
+		$state = $state_model->find('first', array(
+			'conditions' => array($this->settings[$model->alias]['foreign_key'] => $model->id),
 			'order' => array('created DESC'),
 			'fields' => array('state')
 		));
-		return $state[$this->state_model->alias]['state'];
+		return $state[$state_model->alias]['state'];
 	}
 
 	// transition to a new state based on current state and event
 	public function transition(Model $model, $event)
 	{
-		$current_state = $this->getCurrentState();
+		$current_state = $this->getCurrentState($model);
 		if (isset($model->states[$current_state][$event])) {
 			$next_state = $model->states[$current_state][$event];
-			return $this->changeState($next_state);
+			return $this->changeState($model, $next_state);
 		}
 		return false;
 	}
 
 	// set state to first in the array
-	protected function setInitialState()
+	protected function setInitialState(Model $model)
 	{
-		if (count($this->model->states) > 0) {
-			reset($this->model->states);
-			$initial_state = key($this->model->states);
-			$this->changeState($initial_state);
+		if (count($model->states) > 0) {
+			reset($model->states);
+			$initial_state = key($model->states);
+			$this->changeState($model, $initial_state);
 		}
 	}
 
 	// change state by creating new state record
-	protected function changeState($state)
+	protected function changeState(Model $model, $state)
 	{
+		$state_model = $this->settings[$model->alias]['state_model'];
 		// make sure we're creating a new record
-		$this->state_model->create();
+		$state_model->create();
 
 		$state_data = array(
-			$this->state_model->alias => array(
+			$state_model->alias => array(
 				'state' => $state,
-				$this->foreign_key => $this->model->id
+				$this->settings[$model->alias]['foreign_key'] => $model->id
 			)
 		);
-		return (bool) $this->state_model->save($state_data);
+		return (bool) $state_model->save($state_data);
 	}
 }
