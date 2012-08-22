@@ -64,6 +64,7 @@ class StateMachineBehavior extends ModelBehavior
 	// change state by creating new state record
 	protected function changeState(Model $model, $state)
 	{
+		$model->read();
 		$model->set('state', $state);
 		$model->save();
 
