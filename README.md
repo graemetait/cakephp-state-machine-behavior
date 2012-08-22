@@ -21,6 +21,10 @@ Describe a model's states and the events that cause transitions between them, th
 		  PRIMARY KEY (`id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+4. Add a new varchar field to your model's table called 'state'.
+
+		ALTER TABLE `placements` ADD `state` VARCHAR(50);
+
 ## Usage
 
 1. In your model describe the states and transitions you need like so.
@@ -72,6 +76,9 @@ Describe a model's states and the events that cause transitions between them, th
 		$this->Placement->id = $placement_id;
 		$this->Placement->getCurrentState(); // returns 'placed'
 
-## TODO
+## Notes
 
-- Add callbacks to execute when entering or exiting a state.
+- The current state of a record is also stored in the 'state' column of the model. This is to make it easier when querying the model by state.
+- A callback method is supported for state changes. This should be titled _onState<name of state>(). For example, to run a method when the model changes to a state named 'placed' add the following method to your model.
+
+		public function _onStatePlaced() {}
