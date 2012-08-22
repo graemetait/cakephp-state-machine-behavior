@@ -14,6 +14,10 @@
 
 class StateMachineBehavior extends ModelBehavior
 {
+	/**
+	 * Initialise behavior by reading settings and creating model relationship
+	 * @return void
+	 */
 	public function setup(Model $model)
 	{
 		// create hasMany relationship between model and it's state model
@@ -26,7 +30,11 @@ class StateMachineBehavior extends ModelBehavior
 		$this->settings[$model->alias]['state_model'] = $model->{$state_model_alias};
 	}
 
-	// if new record then set initital state
+	/**
+	 * If a new record has been created then set it's initial state
+	 * @param  bool $created Whether the record is new
+	 * @return void
+	 */
 	public function afterSave(Model $model, $created)
 	{
 		if ($created) {
@@ -34,13 +42,21 @@ class StateMachineBehavior extends ModelBehavior
 		}
 	}
 
-	// return current event as string
+	/**
+	 * Retrieve the current state of the model
+	 * @return string The current state
+	 */
 	public function getCurrentState(Model $model)
 	{
 		return $model->field('state');
 	}
 
 	// transition to a new state based on current state and event
+	/**
+	 * Transition from the current state to a new state based on the event
+	 * @param  string $event The transitioning event
+	 * @return bool          Whether the state change was successful
+	 */
 	public function transition(Model $model, $event)
 	{
 		$current_state = $this->getCurrentState($model);
@@ -51,12 +67,20 @@ class StateMachineBehavior extends ModelBehavior
 		return false;
 	}
 
+	/**
+	 * Look up what the initial state should be
+	 * @return string The initial state
+	 */
 	public function getInitialState(Model $model)
 	{
 		$states = $this->listStates($model);
 		return $states[0];
 	}
 
+	/**
+	 * Fetch states as listed in model
+	 * @return array List of states
+	 */
 	public function listStates(Model $model)
 	{
 		$states = array();
@@ -66,7 +90,10 @@ class StateMachineBehavior extends ModelBehavior
 		return $states;
 	}
 
-	// prepare formatted list of states for select input
+	/**
+	 * Prepare formatted list of states for select input
+	 * @return array Formatted list of states
+	 */
 	public function listStatesForSelect(Model $model)
 	{
 		$select_states['all'] = 'All';
@@ -77,7 +104,10 @@ class StateMachineBehavior extends ModelBehavior
 		return $select_states;
 	}
 
-	// set state to first in the array
+	/**
+	 * Set state to first in the array
+	 * @return void
+	 */
 	protected function initialiseState(Model $model)
 	{
 		if (count($model->states) > 0) {
@@ -85,7 +115,11 @@ class StateMachineBehavior extends ModelBehavior
 		}
 	}
 
-	// change state by creating new state record
+	/**
+	 * Change state by creating new state record
+	 * @param  string $state The new state
+	 * @return bool          Whether successful
+	 */
 	protected function changeState(Model $model, $state)
 	{
 		if ($this->setModelState($model, $state) and
@@ -96,7 +130,11 @@ class StateMachineBehavior extends ModelBehavior
 		return false;
 	}
 
-	// save current state in model
+	/**
+	 * Save current state in model
+	 * @param string $state The state
+	 * @return bool          Whether successful
+	 */
 	protected function setModelState(Model $model, $state)
 	{
 		$model->read();
@@ -104,7 +142,11 @@ class StateMachineBehavior extends ModelBehavior
 		return $model->save();
 	}
 
-	// create new record in state model
+	/**
+	 * Create new record in state model
+	 * @param  string $state The state
+	 * @return bool          Whether successful
+	 */
 	protected function createStateRecord(Model $model, $state)
 	{
 		$state_model = $this->settings[$model->alias]['state_model'];
@@ -120,6 +162,10 @@ class StateMachineBehavior extends ModelBehavior
 		return (bool) $state_model->save($state_data);
 	}
 
+	/**
+	 * Execute callback method
+	 * @param string $state The state
+	 */
 	public function callStateMethod(Model $model, $state)
 	{
 		$method = '_onState' . Inflector::humanize($state);
