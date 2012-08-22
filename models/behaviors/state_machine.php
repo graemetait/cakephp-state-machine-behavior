@@ -53,8 +53,17 @@ class StateMachineBehavior extends ModelBehavior
 
 	public function getInitialState(Model $model)
 	{
-		reset($model->states);
-		return key($model->states);
+		$states = $this->listStates($model);
+		return $states[0];
+	}
+
+	public function listStates(Model $model)
+	{
+		$states = array();
+		foreach ($model->states as $key => $value) {
+			$states[] = is_array($value) ? $key : $value;
+		}
+		return $states;
 	}
 
 	// set state to first in the array
