@@ -66,6 +66,17 @@ class StateMachineBehavior extends ModelBehavior
 		return $states;
 	}
 
+	// prepare formatted list of states for select input
+	public function listStatesForSelect(Model $model)
+	{
+		$select_states['all'] = 'All';
+		$states = $model->listStates();
+		foreach ($states as $state) {
+			$select_states[$state] = Inflector::humanize($state);
+		}
+		return $select_states;
+	}
+
 	// set state to first in the array
 	protected function initialiseState(Model $model)
 	{
