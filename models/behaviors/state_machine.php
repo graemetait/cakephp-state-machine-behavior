@@ -37,14 +37,7 @@ class StateMachineBehavior extends ModelBehavior
 	// return current event as string
 	public function getCurrentState(Model $model)
 	{
-		$state_model = $this->settings[$model->alias]['state_model'];
-
-		$state = $state_model->find('first', array(
-			'conditions' => array($this->settings[$model->alias]['foreign_key'] => $model->id),
-			'order' => array('created DESC'),
-			'fields' => array('state')
-		));
-		return $state[$state_model->alias]['state'];
+		return $model->field('state');
 	}
 
 	// transition to a new state based on current state and event
@@ -71,6 +64,9 @@ class StateMachineBehavior extends ModelBehavior
 	// change state by creating new state record
 	protected function changeState(Model $model, $state)
 	{
+		$model->set('state', $state);
+		$model->save();
+
 		$state_model = $this->settings[$model->alias]['state_model'];
 		// make sure we're creating a new record
 		$state_model->create();
