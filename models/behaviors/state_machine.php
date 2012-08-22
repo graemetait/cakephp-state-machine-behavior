@@ -30,7 +30,7 @@ class StateMachineBehavior extends ModelBehavior
 	public function afterSave(Model $model, $created)
 	{
 		if ($created) {
-			$this->setInitialState($model);
+			$this->initialiseState($model);
 		}
 	}
 
@@ -51,13 +51,17 @@ class StateMachineBehavior extends ModelBehavior
 		return false;
 	}
 
+	public function getInitialState(Model $model)
+	{
+		reset($model->states);
+		return key($model->states);
+	}
+
 	// set state to first in the array
-	protected function setInitialState(Model $model)
+	protected function initialiseState(Model $model)
 	{
 		if (count($model->states) > 0) {
-			reset($model->states);
-			$initial_state = key($model->states);
-			$this->changeState($model, $initial_state);
+			$this->changeState($model, $this->getInitialState($model));
 		}
 	}
 
