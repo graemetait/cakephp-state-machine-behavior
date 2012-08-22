@@ -77,10 +77,25 @@ class StateMachineBehavior extends ModelBehavior
 	// change state by creating new state record
 	protected function changeState(Model $model, $state)
 	{
+		if ($this->setModelState($model, $state) and
+			 $this->createStateRecord($model, $state)) {
+			$this->callStateMethod($model, $state);
+			return true;
+		}
+		return false;
+	}
+
+	// save current state in model
+	protected function setModelState(Model $model, $state)
+	{
 		$model->read();
 		$model->set('state', $state);
-		$model->save();
+		return $model->save();
+	}
 
+	// create new record in state model
+	protected function createStateRecord(Model $model, $state)
+	{
 		$state_model = $this->settings[$model->alias]['state_model'];
 		// make sure we're creating a new record
 		$state_model->create();
@@ -92,5 +107,13 @@ class StateMachineBehavior extends ModelBehavior
 			)
 		);
 		return (bool) $state_model->save($state_data);
+	}
+
+	public function callStateMethod(Model $model, $state)
+	{
+		$method = '_onState' . Inflector::humanize($state);
+		if (method_exists($model, $method)) {
+			$model->$method();
+		}
 	}
 }
