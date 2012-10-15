@@ -168,7 +168,7 @@ class StateMachineBehavior extends ModelBehavior
 	 */
 	public function callStateMethod(Model $model, $state)
 	{
-		$method = '_onState' . Inflector::humanize($state);
+		$method = '_onState' . Inflector::camelize($state);
 		if (method_exists($model, $method)) {
 			$model->$method();
 		}
