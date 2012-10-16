@@ -51,7 +51,6 @@ class StateMachineBehavior extends ModelBehavior
 		return $model->field('state');
 	}
 
-	// transition to a new state based on current state and event
 	/**
 	 * Transition from the current state to a new state based on the event
 	 * @param  string $event The transitioning event
