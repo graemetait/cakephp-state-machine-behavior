@@ -82,3 +82,7 @@ Describe a model's states and the events that cause transitions between them, th
 - A callback method is supported for state changes. This should be titled _onState<name of state>(). For example, to run a method when the model changes to a state named 'placed' add the following method to your model.
 
 		public function _onStatePlaced() {}
+
+- You can check whether a state is currently set by calling is<NameOfState>(). For example to check whether a Placement record is currently set to shortlisted call the following.
+
+		$this->Placement->isShortlisted();
