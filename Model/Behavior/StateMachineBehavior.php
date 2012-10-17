@@ -15,6 +15,14 @@
 class StateMachineBehavior extends ModelBehavior
 {
 	/**
+	 * Provides the ability to query whether a state is current by calling
+	 * is<state>(). e.g. isActiveUser() would check whether the active_user
+	 * state is currently set.
+	 * @var array
+	 */
+	public $mapMethods = array('/is(\w+)/' => '__stateIs');
+
+	/**
 	 * Initialise behavior by reading settings and creating model relationship
 	 * @return void
 	 */
@@ -59,6 +67,17 @@ class StateMachineBehavior extends ModelBehavior
 	public function stateIs(Model $model, $state)
 	{
 		return $this->getCurrentState($model) === $state;
+	}
+
+	/**
+	 * Called for is<state>(). Returns whether state is current.
+	 * @param  string $method The actual method call
+	 * @return bool
+	 */
+	public function __stateIs(Model $model, $method)
+	{
+		$state = Inflector::underscore(substr($method, 2));
+		return $this->stateIs($model, $state);
 	}
 
 	/**
