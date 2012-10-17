@@ -18,7 +18,7 @@ class StateMachineBehavior extends ModelBehavior
 	 * Initialise behavior by reading settings and creating model relationship
 	 * @return void
 	 */
-	public function setup(Model $model)
+	public function setup(Model $model, $config = array())
 	{
 		// create hasMany relationship between model and it's state model
 		$state_model_alias = $model->alias . 'State';
