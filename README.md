@@ -83,6 +83,6 @@ Describe a model's states and the events that cause transitions between them, th
 
 		public function _onStatePlaced() {}
 
-- You can check whether a state is currently set by calling is&lt;NameOfState&rt;(). For example to check whether a Placement record is currently set to shortlisted call the following.
+- You can check whether a state is currently set by calling is&lt;NameOfState&gt;(). For example to check whether a Placement record is currently set to shortlisted call the following.
 
 		$this->Placement->isShortlisted();
