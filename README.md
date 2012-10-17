@@ -1,6 +1,6 @@
 # CakePHP Finite State Machine Behavior
 
-A basic finite state machine behavior for CakePHP 1.x.
+A basic finite state machine behavior for CakePHP 2.x. A version for CakePHP 1 can be found in the branch cakephp1.
 
 Describe a model's states and the events that cause transitions between them, then trigger these events to change your model to a new state.
 
