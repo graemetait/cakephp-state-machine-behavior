@@ -52,6 +52,16 @@ class StateMachineBehavior extends ModelBehavior
 	}
 
 	/**
+	 * Query if the specified state is the current state
+	 * @param  string $state A state
+	 * @return bool
+	 */
+	public function stateIs(Model $model, $state)
+	{
+		return $this->getCurrentState($model) === $state;
+	}
+
+	/**
 	 * Transition from the current state to a new state based on the event
 	 * @param  string $event The transitioning event
 	 * @return bool          Whether the state change was successful
