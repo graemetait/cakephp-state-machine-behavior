@@ -166,8 +166,7 @@ class StateMachineBehavior extends ModelBehavior
 	protected function setModelState(Model $model, $state)
 	{
 		$model->read();
-		$model->set('state', $state);
-		return $model->save();
+		return $model->saveField('state', $state);
 	}
 
 	/**
