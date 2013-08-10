@@ -1,0 +1,28 @@
+{
+    "name": "burriko/cakephp-state-machine-behavior",
+    "description": "CakePHP State Machine Behavior",
+    "type": "cakephp-plugin",
+    "keywords": ["cakephp", "state", "behavior"],
+    "homepage": "https://github.com/burriko/cakephp-state-machine-behavior",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Graeme Tait",
+            "homepage": "http://graemetait.co.uk",
+            "role": "Author"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/burriko/cakephp-state-machine-behavior/issues",
+        "source": "https://github.com/burriko/cakephp-state-machine-behavior"
+    },
+    "require": {
+        "php": ">=5.3.0",
+        "composer/installers": "*"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
+    }
+}
