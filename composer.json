@@ -1,8 +1,8 @@
 {
-    "name": "burriko/cakephp-state-machine-behavior",
-    "description": "CakePHP State Machine Behavior",
+    "name": "burriko/cake-state-machine",
+    "description": "A finite state machine behavior for CakePHP 2.x",
     "type": "cakephp-plugin",
-    "keywords": ["cakephp", "state", "behavior"],
+    "keywords": ["cakephp", "finite", "state", "machine", "behavior"],
     "homepage": "https://github.com/burriko/cakephp-state-machine-behavior",
     "license": "MIT",
     "authors": [
