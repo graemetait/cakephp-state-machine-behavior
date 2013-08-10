@@ -6,10 +6,21 @@ Describe a model's states and the events that cause transitions between them, th
 
 ## Installation
 
-1. Copy the behavior to models/behaviors in your app.
+If you're using composer then just add the following to your require block.
+
+		"burriko/cake-state-machine": "2.0.*@dev"
+
+If you're not, then clone/copy the contents of this directory to app/Plugins/CakeStateMachine.
+
+## Configure
+
+1. Add the following line to your app/Config/bootstrap.php.
+
+		CakePlugin::load('CakeStateMachine');
+
 2. In your model add:
 
-		public $actsAs = array('StateMachine');
+		public $actsAs = array('CakeStateMachine.StateMachine');
 
 3. Create a new database table to store the states using the following schema, adjusting the table name and foreign key to match your model. For example, if you are adding states to a model name Placement you would use the following.
 
