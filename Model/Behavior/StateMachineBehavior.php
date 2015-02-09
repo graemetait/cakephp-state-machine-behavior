@@ -43,7 +43,7 @@ class StateMachineBehavior extends ModelBehavior
 	 * @param  bool $created Whether the record is new
 	 * @return void
 	 */
-	public function afterSave(Model $model, $created)
+	public function afterSave(Model $model, $created, $options = array())
 	{
 		if ($created) {
 			$this->initialiseState($model);
